@@ -1,5 +1,17 @@
-import typing as tp
+def new_char(c : str, shift: int) -> str:
+    if c.isupper():
+        l = ord('A')
+        r = ord('Z')
+    else:
+        l = ord('a')
+        r = ord('z')
 
+    if l <= ord(c) + shift <= r:
+        return chr(ord(c) + shift)
+    elif shift > 0:
+        return chr(l + (ord(c) + shift - r) - 1)
+    else:
+        return chr(r - (l - (ord(c) + shift)) + 1)
 
 def encrypt_caesar(plaintext: str, shift: int = 3) -> str:
     """
@@ -16,18 +28,12 @@ def encrypt_caesar(plaintext: str, shift: int = 3) -> str:
     ciphertext = ""
 
     for i in plaintext:
-        if i.isalpha():  
-            mesto = ord(i)
-            if i.isupper():  
-                k = ord('A')
-            else:
-                k = ord('a')
+        if i.isalpha():
 
-            new_mesto = k + (mesto + shift - k) % 26
-            ciphertext += chr(new_mesto)
+            ciphertext += new_char(i, shift)
         else:
-            ciphertext += i  
-            
+            ciphertext += i
+
     return ciphertext
 
 
@@ -43,19 +49,5 @@ def decrypt_caesar(ciphertext: str, shift: int = 3) -> str:
     >>> decrypt_caesar("")
     ''
     """
-    plaintext = ""
-    
-    for i in ciphertext:
-        if i.isalpha():  
-            mesto = ord(i)
-            if i.isupper():  
-                k = ord('A')
-            else:
-                k = ord('a')
-
-            new_mesto = k + (mesto - shift - k + 26) % 26
-            plaintext += chr(new_mesto)
-        else:
-            plaintext += i
-            
+    plaintext = encrypt_caesar(ciphertext, -shift)
     return plaintext
