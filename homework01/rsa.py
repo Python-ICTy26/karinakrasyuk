@@ -46,9 +46,9 @@ def multiplicative_inverse(e: int, phi: int) -> int:
     >>> multiplicative_inverse(7, 40)
     23
     """
-    d = 1  
+    d = 1
     while (d * e) % phi != 1:
-        d += 1  
+        d += 1
     return d
 
 
