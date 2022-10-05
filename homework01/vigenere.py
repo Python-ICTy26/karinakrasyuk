@@ -1,3 +1,5 @@
+import typing as tp
+
 from caesar import encrypt_caesar
 
 def encrypt_vigenere(plaintext: str, keyword: str) -> str:
