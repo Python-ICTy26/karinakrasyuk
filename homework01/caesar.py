@@ -1,3 +1,5 @@
+import typing as tp
+
 def new_char(c : str, shift: int) -> str:
     if c.isupper():
         l = ord('A')
