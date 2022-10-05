@@ -1,4 +1,20 @@
-from caesar import encrypt_caesar
+import typing as tp
+
+def new_char(c : str, shift: int) -> str:
+    if c.isupper():
+        l = ord('A')
+        r = ord('Z')
+    else:
+        l = ord('a')
+        r = ord('z')
+
+    if l <= ord(c) + shift <= r:
+        return chr(ord(c) + shift)
+    elif shift > 0:
+        return chr(l + (ord(c) + shift - r) - 1)
+    else:
+        return chr(r - (l - (ord(c) + shift)) + 1)
+
 
 def encrypt_vigenere(plaintext: str, keyword: str) -> str:
     """
@@ -22,7 +38,7 @@ def encrypt_vigenere(plaintext: str, keyword: str) -> str:
         else:
             shift = ord(key[i]) - ord('a')
 
-        ciphertext += encrypt_caesare(ciphertext[i], shift)
+        ciphertext += new_char(plaintext[i], shift)
 
     return ciphertext
 
@@ -50,6 +66,6 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
         else:
             shift = ord(key[i]) - ord('a')
 
-        plaintext += encrypt_caesare(ciphertext[i], -shift)
+        plaintext += new_char(ciphertext[i], -shift)
 
     return plaintext
