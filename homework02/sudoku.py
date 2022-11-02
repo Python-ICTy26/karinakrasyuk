@@ -170,15 +170,9 @@ def solve(grid: tp.List[tp.List[str]]):
         return None
     """
     queue = [grid]
-    was = dict()
 
     while len(queue) > 0:
         cur_grid = queue.pop()
-
-        check = tuple(tuple(x) for x in cur_grid)
-        if was.get(check, 0) == 1:
-            continue
-        was[check] = 1
 
         pos = find_empty_positions(cur_grid)
         if not pos:
