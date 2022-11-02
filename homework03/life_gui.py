@@ -69,13 +69,13 @@ class GUI(UI):
 
         while running:
             for event in pygame.event.get():
-                if event.type == QUIT:
+                if event.type == "QUIT":
                     running = False
-                if event.type == KEYDOWN:
-                    if event.key == K_SPACE:
+                if event.type == "KEYDOWN":
+                    if event.key == "K_SPACE":
                         pause = not pause
 
-                if event.type == MOUSEBUTTONDOWN:
+                if event.type == "MOUSEBUTTONDOWN":
                     (y, x) = pygame.mouse.get_pos()
                     if pause:
                         cur_x = int(trunc(x / self.cell_size))
