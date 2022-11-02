@@ -1,6 +1,7 @@
 import pygame
-from life import GameOfLife
+
 from pygame.locals import *
+from life import GameOfLife
 from ui import UI
 from math import trunc
 
@@ -94,5 +95,3 @@ class GUI(UI):
 
             clock.tick(self.speed)
         pygame.quit()
-
-
