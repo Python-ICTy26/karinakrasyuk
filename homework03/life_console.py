@@ -10,7 +10,7 @@ class Console(UI):
         super().__init__(life)
 
     def draw_borders(self, screen) -> None:
-        """ Отобразить рамку. """
+        """Отобразить рамку."""
         row = "+" + str("-" * self.life.cols) + "+"
         screen.addstr(0, 0, row)
         for i in range(self.life.rows):
@@ -20,14 +20,14 @@ class Console(UI):
         screen.addstr(self.life.rows + 1, 0, row)
 
     def draw_grid(self, screen) -> None:
-        """ Отобразить состояние клеток. """
+        """Отобразить состояние клеток."""
         for i in range(self.life.rows):
             row = ""
             for j in range(self.life.cols):
                 if self.life.curr_generation[i][j] == 1:
-                    row += '*'
+                    row += "*"
                 else:
-                    row += ' '
+                    row += " "
 
             screen.addstr(i + 1, 1, row)
 
@@ -35,7 +35,7 @@ class Console(UI):
         screen = curses.initscr()
 
         running = True
-        while (running):
+        while running:
             if not self.life.is_changing:
                 running = False
             self.draw_borders(screen)
@@ -44,8 +44,3 @@ class Console(UI):
             screen.refresh()
             time.sleep(0.2)
         curses.endwin()
-
-
-if __name__ == "__main__":
-    game = Console(GameOfLife((20, 50)))
-    game.run()

@@ -12,10 +12,10 @@ Grid = tp.List[Cells]
 
 class GameOfLife:
     def __init__(
-            self,
-            size: tp.Tuple[int, int],
-            randomize: bool = True,
-            max_generations: tp.Optional[float] = float("inf"),
+        self,
+        size: tp.Tuple[int, int],
+        randomize: bool = True,
+        max_generations: tp.Optional[float] = float("inf"),
     ) -> None:
         # Размер клеточного поля
         self.rows, self.cols = size
@@ -101,8 +101,8 @@ class GameOfLife:
         Прочитать состояние клеток из указанного файла.
         """
         matrix: Grid
-        f = open(filename, 'r')
-        matrix = [[int(elem) for elem in row if elem != '\n'] for row in f.readlines()]
+        f = open(filename, "r")
+        matrix = [[int(elem) for elem in row if elem != "\n"] for row in f.readlines()]
         game = GameOfLife((len(matrix), len(matrix[0])), False)
         game.curr_generation = matrix
 
@@ -112,10 +112,9 @@ class GameOfLife:
         """
         Сохранить текущее состояние клеток в указанный файл.
         """
-        f = open(filename, 'w')
+        f = open(filename, "w")
         for i in range(self.rows):
-            row = ''
+            row = ""
             for j in range(self.cols):
                 row += str(self.curr_generation[i][j])
             f.write(row + "\n")
-
