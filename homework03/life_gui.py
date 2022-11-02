@@ -96,6 +96,3 @@ class GUI(UI):
         pygame.quit()
 
 
-if __name__ == '__main__':
-    game = GUI(GameOfLife((20, 20)), 20)
-    game.run()
