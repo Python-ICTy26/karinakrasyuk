@@ -1,7 +1,6 @@
 import curses
 import time
 
-
 from life import GameOfLife
 from ui import UI
 
