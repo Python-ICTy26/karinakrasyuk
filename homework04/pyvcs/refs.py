@@ -3,30 +3,48 @@ import typing as tp
 
 
 def update_ref(gitdir: pathlib.Path, ref: tp.Union[str, pathlib.Path], new_value: str) -> None:
-    # PUT YOUR CODE HERE
-    ...
+    path = gitdir / pathlib.Path(ref)
+    with open(path, "w") as file:
+        file.write(new_value)
 
 
 def symbolic_ref(gitdir: pathlib.Path, name: str, ref: str) -> None:
-    # PUT YOUR CODE HERE
-    ...
+    if ref_resolve(gitdir, ref):
+        path = gitdir / name
+        with open(path, "w") as file:
+            file.write(f"ref: {ref}")
 
 
 def ref_resolve(gitdir: pathlib.Path, refname: str) -> str:
-    # PUT YOUR CODE HERE
-    ...
+    if refname == "HEAD":
+        refname = get_ref(gitdir)
+    path = gitdir / refname
+    if path.exists():
+        with open(path, "r") as f:
+            return f.read()
+    else:
+        return refname
 
 
 def resolve_head(gitdir: pathlib.Path) -> tp.Optional[str]:
-    # PUT YOUR CODE HERE
-    ...
+    path = gitdir / get_ref(gitdir)
+    if path.exists():
+        return ref_resolve(gitdir, "HEAD")
+    else:
+        return None
 
 
 def is_detached(gitdir: pathlib.Path) -> bool:
-    # PUT YOUR CODE HERE
-    ...
+    path = gitdir / "HEAD"
+    with open(path, "r") as f:
+        data = str(f.read())
+    if "ref" not in data:
+        return True
+    else:
+        return False
 
 
 def get_ref(gitdir: pathlib.Path) -> str:
-    # PUT YOUR CODE HERE
-    ...
+    with open((gitdir / "HEAD"), "r") as f:
+        data = f.read()
+    return data[data.find(" ") + 1 :].strip()
