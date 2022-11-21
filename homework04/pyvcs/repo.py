@@ -25,8 +25,10 @@ def repo_create(workdir: tp.Union[str, pathlib.Path]) -> pathlib.Path:
     os.makedirs(workdir / gitdir / "refs" / "heads")
 
     (workdir / gitdir / "HEAD").write_text("ref: refs/heads/master\n")
-    (workdir / gitdir / "config").write_text("[core]\n\trepositoryformatversion = 0\n\tfilemode = true\n\tbare = "
-                                             "false\n\tlogallrefupdates = false\n")
+    (workdir / gitdir / "config").write_text(
+        "[core]\n\trepositoryformatversion = 0\n\tfilemode = true\n\tbare = "
+        "false\n\tlogallrefupdates = false\n"
+    )
     (workdir / gitdir / "description").write_text("Unnamed pyvcs repository.\n")
     return workdir / gitdir
 

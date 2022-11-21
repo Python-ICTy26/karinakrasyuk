@@ -26,8 +26,20 @@ class GitIndexEntry(tp.NamedTuple):
 
     def pack(self) -> bytes:
         values = (
-            self.ctime_s, self.ctime_n, self.mtime_s, self.mtime_n, self.dev, self.ino, self.mode, self.uid, self.gid,
-            self.size, self.sha1, self.flags, self.name.encode())
+            self.ctime_s,
+            self.ctime_n,
+            self.mtime_s,
+            self.mtime_n,
+            self.dev,
+            self.ino,
+            self.mode,
+            self.uid,
+            self.gid,
+            self.size,
+            self.sha1,
+            self.flags,
+            self.name.encode(),
+        )
         return struct.pack(
             f"!4L6i20sh{len(self.name)}s3x",
             values,
@@ -37,7 +49,7 @@ class GitIndexEntry(tp.NamedTuple):
     def unpack(data: bytes) -> "GitIndexEntry":
         f = "!4L6i20sh" + str(len(data) - 62) + "s"
         unpacked = list(struct.unpack(f, data))
-        unpacked[-1] = unpacked[-1][:len(unpacked[12]) - 3].decode()
+        unpacked[-1] = unpacked[-1][: len(unpacked[12]) - 3].decode()
         return GitIndexEntry(*unpacked)
 
 
@@ -49,11 +61,11 @@ def read_index(gitdir: pathlib.Path) -> tp.List[GitIndexEntry]:
     answer = []
     len_data = int.from_bytes(data[8:12], "big")
     j = 0
-    data = data[12: -20]
+    data = data[12:-20]
     for i in range(len_data):
         need = b"\x00\x00\x00"
-        end = data[j + 62:].find(need) + j + 62 + 3
-        answer += [GitIndexEntry.unpack(data[j: end])]
+        end = data[j + 62 :].find(need) + j + 62 + 3
+        answer += [GitIndexEntry.unpack(data[j:end])]
         j = end
     return answer
 

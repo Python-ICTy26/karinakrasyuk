@@ -28,7 +28,7 @@ def checkout(gitdir: pathlib.Path, obj_name: str) -> None:
         if pathlib.Path(element.name).is_file():
             if "/" in element.name:
                 pos = element.name.find("/")
-                shutil.rmtree(element.name[: pos])
+                shutil.rmtree(element.name[:pos])
             else:
                 os.chmod(element.name, 0o777)
                 os.remove(element.name)
@@ -40,7 +40,7 @@ def checkout(gitdir: pathlib.Path, obj_name: str) -> None:
     for file in find_tree_files(tree, gitdir):
         if "/" in file[0]:
             pos = file[0].find("/")
-            dir_name = file[0][: pos]
+            dir_name = file[0][:pos]
             os.mkdir(dir_name)
         with open(file[0], "w") as f:
             _, content = read_object(file[1], gitdir)

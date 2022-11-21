@@ -17,7 +17,7 @@ def write_tree(gitdir: pathlib.Path, index: tp.List[GitIndexEntry], dirname: str
             tree += b"40000 "
             pos = element.name.find("/")
             dirname = element.name[:pos]
-            temp = files + b" " + element.name[pos + 1:].encode() + b"\0" + element.sha1
+            temp = files + b" " + element.name[pos + 1 :].encode() + b"\0" + element.sha1
             hash = bytes.fromhex(hash_object(temp, fmt="tree", write=True))
             tree += dirname.encode() + b"\0" + hash
         else:
@@ -36,12 +36,20 @@ def commit_tree(
         timezone = "-"
     else:
         timezone = "+"
-    timezone += "0" + str(abs(time.timezone) // 60 // 60) + "0" + str((abs(time.timezone) // 60 % 60))
+    timezone += (
+            "0" + str(abs(time.timezone) // 60 // 60) + "0" + str((abs(time.timezone) // 60 % 60))
+    )
     data = ["tree " + str(tree)]
     if parent is not None:
         data.append("parent " + str(parent))
-    print(("author " + author + " " + str(int(time.mktime(time.localtime()))) + " " + str(timezone)))
-    data.append("author " + author + " " + str(int(time.mktime(time.localtime()))) + " " + str(timezone))
-    data.append("committer " + author + " " + str(int(time.mktime(time.localtime()))) + " " + str(timezone))
+    print(
+        ("author " + author + " " + str(int(time.mktime(time.localtime()))) + " " + str(timezone))
+    )
+    data.append(
+        "author " + author + " " + str(int(time.mktime(time.localtime()))) + " " + str(timezone)
+    )
+    data.append(
+        "committer " + author + " " + str(int(time.mktime(time.localtime()))) + " " + str(timezone)
+    )
     data.append("\n" + message + "\n")
     return hash_object("\n".join(data).encode(), "commit", write=True)
