@@ -37,7 +37,7 @@ def commit_tree(
     else:
         timezone = "+"
     timezone += (
-            "0" + str(abs(time.timezone) // 60 // 60) + "0" + str((abs(time.timezone) // 60 % 60))
+        "0" + str(abs(time.timezone) // 60 // 60) + "0" + str((abs(time.timezone) // 60 % 60))
     )
     data = ["tree " + str(tree)]
     if parent is not None:
