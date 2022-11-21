@@ -23,7 +23,7 @@ def ref_resolve(gitdir: pathlib.Path, refname: str) -> str:
         with open(path, "r") as f:
             return f.read()
     else:
-        return None
+        return refname
 
 
 def resolve_head(gitdir: pathlib.Path) -> tp.Optional[str]:

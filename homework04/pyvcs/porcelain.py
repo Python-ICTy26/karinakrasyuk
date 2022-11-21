@@ -34,14 +34,14 @@ def checkout(gitdir: pathlib.Path, obj_name: str) -> None:
                 os.remove(element.name)
     path = gitdir / "objects" / obj_name[:2] / obj_name[2:]
     f.close()
-    with open(path, "rb") as f:
-        tree = commit_parse(f.read()).decode()
-    f.close()
-    for file in find_tree_files(tree, gitdir):
-        if "/" in file[0]:
-            pos = file[0].find("/")
-            dir_name = file[0][:pos]
+    with open(path, "rb") as f1:
+        tree = commit_parse(f1.read()).decode()
+    f1.close()
+    for el in find_tree_files(tree, gitdir):
+        if "/" in el[0]:
+            pos = el[0].find("/")
+            dir_name = el[0][:pos]
             os.mkdir(dir_name)
-        with open(file[0], "w") as f:
-            _, content = read_object(file[1], gitdir)
+        with open(el[0], "w") as f:
+            _, content = read_object(el[1], gitdir)
             f.write(content.decode())

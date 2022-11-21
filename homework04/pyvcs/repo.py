@@ -12,7 +12,7 @@ def repo_find(workdir: tp.Union[str, pathlib.Path] = ".") -> pathlib.Path:
     for directory in path.parents:
         if directory.name == gitdir:
             return directory
-        raise Exception("Not a git repository")
+    raise Exception("Not a git repository")
 
 
 def repo_create(workdir: tp.Union[str, pathlib.Path]) -> pathlib.Path:

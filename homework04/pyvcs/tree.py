@@ -36,6 +36,8 @@ def commit_tree(
         timezone = "-"
     else:
         timezone = "+"
+    if not author:
+        author = f"{os.getenv('GIT_AUTHOR_NAME')} <{os.getenv('GIT_AUTHOR_EMAIL')}>"
     timezone += (
         "0" + str(abs(time.timezone) // 60 // 60) + "0" + str((abs(time.timezone) // 60 % 60))
     )
