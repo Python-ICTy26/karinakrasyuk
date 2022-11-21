@@ -46,7 +46,7 @@ def read_object(sha: str, gitdir: pathlib.Path) -> tp.Tuple[str, bytes]:
         head = data[:ind1]
         ind2 = head.find(b" ")
         head = head[:ind2]
-        data = data[ind1 + 1:]
+        data = data[ind1 + 1 :]
         return head.decode(), data
 
 
@@ -54,9 +54,9 @@ def read_tree(data: bytes) -> tp.List[tp.Tuple[int, str, str]]:
     res = []
     while len(data):
         mode = int(data[: data.find(b" ")].decode())
-        data = data[data.find(b" ") + 1:]
+        data = data[data.find(b" ") + 1 :]
         name = data[: data.find(b"\x00")].decode()
-        data = data[data.find(b"\x00") + 1:]
+        data = data[data.find(b"\x00") + 1 :]
         sha = bytes.hex(data[:20])
         data = data[20:]
         res += [(mode, name, sha)]
@@ -94,4 +94,4 @@ def find_tree_files(tree_sha: str, gitdir: pathlib.Path) -> tp.List[tp.Tuple[str
 def commit_parse(raw: bytes, start: int = 0, dct=None):
     data = zlib.decompress(raw)
     index = data.find(b"tree")
-    return data[index + 5: index + 45]
+    return data[index + 5 : index + 45]
