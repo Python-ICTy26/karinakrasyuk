@@ -45,6 +45,6 @@ def is_detached(gitdir: pathlib.Path) -> bool:
 
 
 def get_ref(gitdir: pathlib.Path) -> str:
-    path = gitdir / "HEAD"
-    with open(path, "r") as f:
-        return f.read()[f.read().find(" ") + 1 :]
+    with open((gitdir / "HEAD"), "r") as f:
+        data = f.read()
+    return data[data.find(" ") + 1:].strip()

@@ -33,10 +33,8 @@ def checkout(gitdir: pathlib.Path, obj_name: str) -> None:
                 os.chmod(element.name, 0o777)
                 os.remove(element.name)
     path = gitdir / "objects" / obj_name[:2] / obj_name[2:]
-    f.close()
     with open(path, "rb") as f1:
         tree = commit_parse(f1.read()).decode()
-    f1.close()
     for el in find_tree_files(tree, gitdir):
         if "/" in el[0]:
             pos = el[0].find("/")

@@ -72,7 +72,7 @@ def cat_file(obj_name: str, pretty: bool = True) -> None:
             files = read_tree(data)
             for file in files:
                 res += f"{str(file[0]).zfill(6)} {read_object(file[2], repo_find())[0]} {file[2]}\t{file[1]}\n"
-                print(res)
+            print(res)
         else:
             print(data.decode())
 

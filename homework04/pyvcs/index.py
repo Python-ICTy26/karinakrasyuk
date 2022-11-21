@@ -25,7 +25,7 @@ class GitIndexEntry(tp.NamedTuple):
     name: str
 
     def pack(self) -> bytes:
-        values = (
+        values = [
             self.ctime_s,
             self.ctime_n,
             self.mtime_s,
@@ -39,10 +39,10 @@ class GitIndexEntry(tp.NamedTuple):
             self.sha1,
             self.flags,
             self.name.encode(),
-        )
+        ]
         return struct.pack(
             f"!4L6i20sh{len(self.name)}s3x",
-            values,
+            *values,
         )
 
     @staticmethod
@@ -65,7 +65,7 @@ def read_index(gitdir: pathlib.Path) -> tp.List[GitIndexEntry]:
     for i in range(len_data):
         need = b"\x00\x00\x00"
         end = data[j + 62 :].find(need) + j + 62 + 3
-        answer += [GitIndexEntry.unpack(data[j:end])]
+        answer.append(GitIndexEntry.unpack(data[j:end]))
         j = end
     return answer
 
@@ -92,7 +92,10 @@ def ls_files(gitdir: pathlib.Path, details: bool = False) -> None:
 
 
 def update_index(gitdir: pathlib.Path, paths: tp.List[pathlib.Path], write: bool = True) -> None:
-    res = []
+    if (gitdir / "index").exists():
+        res = read_index(gitdir)
+    else:
+        res = []
     for path in paths:
         f = open(path, "rb")
         str_f = f.read()
@@ -112,13 +115,8 @@ def update_index(gitdir: pathlib.Path, paths: tp.List[pathlib.Path], write: bool
                 size=stat.st_size,
                 sha1=bytes.fromhex(sha),
                 flags=7,
-                name=str(path),
+                name=str(path).replace("\\", "/"),
             )
         )
         res = sorted(res, key=lambda x: x.name)
-        if (gitdir / "index").exists():
-            data = read_index(gitdir)
-            data += res
-            write_index(gitdir, data)
-        else:
-            write_index(gitdir, res)
+        write_index(gitdir, res)
