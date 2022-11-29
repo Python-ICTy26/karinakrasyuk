@@ -57,7 +57,7 @@ def get_mutual(
         count: tp.Optional[int] = None,
         offset: int = 0,
         progress=None,
-) -> tp.Union[tp.List[int], tp.List[MutualFriends]]:
+) -> tp.List[MutualFriends]:
     """
     Получить список идентификаторов общих друзей между парой пользователей.
 
@@ -69,36 +69,34 @@ def get_mutual(
     :param offset: Смещение, необходимое для выборки определенного подмножества общих друзей.
     :param progress: Callback для отображения прогресса.
     """
-    if target_uids:
-        friends = []
-        for iter in range(math.ceil(len(target_uids) / 100)):
-            response = session.get(
-                "friends.getMutual",
-                source_uid=source_uid,
-                target_uid=target_uid,
-                target_uids=target_uids,
-                count=count,
-                order=order,
-                offset=iter * 100,
-                progress=progress,
-                access_token=VK_CONFIG["access_token"],
-                v=VK_CONFIG["version"],
-            )
-            friends += response.json()["response"]
-            time.sleep(0.35)
-        return friends
+    friends = []
+
+    if target_uids is None:
+        ln = 1
     else:
-        friends = session.get(
+        ln = math.ceil(len(target_uids) / 100)
+
+    params = {
+        "source_uid": source_uid,
+        "target_uid": target_uid,
+        "target_uids": target_uids,
+        "order": order,
+        "count": count,
+        "progress": progress,
+    }
+
+    for iter in range(ln):
+        params["offset"] = iter * 100
+        get = session.get(
             "friends.getMutual",
-            source_uid=source_uid,
-            target_uid=target_uid,
-            count=count,
-            offset=offset,
-            order=order,
-            access_token=VK_CONFIG["access_token"],
-            v=VK_CONFIG["version"],
+            **params,
         )
-        return friends.json()["response"]
+        response = get.json()["response"]
+        friends += response
+
+        time.sleep(1)
+
+    return friends
 
 
 
