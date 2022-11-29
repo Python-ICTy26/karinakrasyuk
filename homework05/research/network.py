@@ -9,7 +9,7 @@ from vkapi.friends import get_friends, get_mutual
 
 
 def ego_network(
-        user_id: tp.Optional[int] = None, friends: tp.Optional[tp.List[int]] = None
+    user_id: tp.Optional[int] = None, friends: tp.Optional[tp.List[int]] = None
 ) -> tp.List[tp.Tuple[int, int]]:
     """
     Построить эгоцентричный граф друзей.
@@ -55,9 +55,9 @@ def get_communities(net: tp.List[tp.Tuple[int, int]]) -> tp.Dict[int, tp.List[in
 
 
 def describe_communities(
-        clusters: tp.Dict[int, tp.List[int]],
-        friends: tp.List[tp.Dict[str, tp.Any]],
-        fields: tp.Optional[tp.List[str]] = None,
+    clusters: tp.Dict[int, tp.List[int]],
+    friends: tp.List[tp.Dict[str, tp.Any]],
+    fields: tp.Optional[tp.List[str]] = None,
 ) -> pd.DataFrame:
     if fields is None:
         fields = ["first_name", "last_name"]
@@ -70,8 +70,3 @@ def describe_communities(
                     data.append([cluster_n] + [friend.get(field) for field in fields])  # type: ignore
                     break
     return pd.DataFrame(data=data, columns=["cluster"] + fields)
-
-
-if __name__ == "__main__":
-    net = ego_network(214794636, [252122581])
-    print(net)

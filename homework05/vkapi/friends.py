@@ -17,7 +17,7 @@ class FriendsResponse:
 
 
 def get_friends(
-        user_id: int, count: int = 5000, offset: int = 0, fields: tp.Optional[tp.List[str]] = None
+    user_id: int, count: int = 5000, offset: int = 0, fields: tp.Optional[tp.List[str]] = None
 ) -> FriendsResponse:
     """
     Получить список идентификаторов друзей пользователя или расширенную информацию
@@ -50,13 +50,13 @@ class MutualFriends(tp.TypedDict):
 
 
 def get_mutual(
-        source_uid: tp.Optional[int] = None,
-        target_uid: tp.Optional[int] = None,
-        target_uids: tp.Optional[tp.List[int]] = None,
-        order: str = "",
-        count: tp.Optional[int] = None,
-        offset: int = 0,
-        progress=None,
+    source_uid: tp.Optional[int] = None,
+    target_uid: tp.Optional[int] = None,
+    target_uids: tp.Optional[tp.List[int]] = None,
+    order: str = "",
+    count: tp.Optional[int] = None,
+    offset: int = 0,
+    progress=None,
 ) -> tp.List[MutualFriends]:
     """
     Получить список идентификаторов общих друзей между парой пользователей.
@@ -97,8 +97,3 @@ def get_mutual(
         time.sleep(1)
 
     return friends
-
-
-
-if __name__ == "__main__":
-    print(get_mutual(source_uid=214794636, target_uids=[252122581]))
