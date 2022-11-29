@@ -1,8 +1,7 @@
 import typing as tp
 
 import requests
-from requests.adapters import HTTPAdapter
-from requests.packages.urllib3.util.retry import Retry
+from requests.adapters import HTTPAdapter, Retry
 
 
 class Session:
@@ -22,10 +21,27 @@ class Session:
         max_retries: int = 3,
         backoff_factor: float = 0.3,
     ) -> None:
-        pass
+        self.http = requests.Session()
+        self.timeout = timeout
+        self.base_url = base_url
+
+        retry_strategy = Retry(
+            backoff_factor=backoff_factor,
+            total=max_retries,
+            status_forcelist=[500, 502, 503, 504],
+        )
+
+        adapter = HTTPAdapter(max_retries=retry_strategy)
+
+        self.http.mount(prefix="https://", adapter=adapter)
 
     def get(self, url: str, *args: tp.Any, **kwargs: tp.Any) -> requests.Response:
-        pass
+        url = f"{self.base_url}/{url}"
+        response = self.http.get(url=url, params=kwargs, timeout=self.timeout)
+        return response
 
     def post(self, url: str, *args: tp.Any, **kwargs: tp.Any) -> requests.Response:
-        pass
+        url = f"{self.base_url}/{url}"
+        response = self.http.post(url=url, data=kwargs, timeout=self.timeout)
+
+        return response
