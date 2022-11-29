@@ -69,5 +69,26 @@ def get_mutual(
     :param offset: Смещение, необходимое для выборки определенного подмножества общих друзей.
     :param progress: Callback для отображения прогресса.
     """
-    pass
+    friends = []
 
+    for iter in range(math.ceil(len(target_uids) / 100)):
+        response = session.get(
+            "friends.getMutual",
+            source_uid=source_uid,
+            target_uid=target_uid,
+            target_uids=target_uids,
+            count=count,
+            order=order,
+            offset=offset,
+            progress=progress,
+            access_token=VK_CONFIG["access_token"],
+            v=VK_CONFIG["version"],
+        )
+        friends += response.json()["response"]
+        offset += 100
+        time.sleep(0.35)
+    return friends
+
+
+if __name__ == "__main__":
+    print(get_mutual(source_uid=214794636, target_uids=[252122581]))
